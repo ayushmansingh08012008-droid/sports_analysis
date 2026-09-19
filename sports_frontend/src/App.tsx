@@ -10,13 +10,25 @@ function SportsAnalysis()
   )
 }
 
+type Match = {
+  id: number
+  homeTeam: string
+  awayTeam: string
+  homeScore: number
+  awayScore: number
+  Win: string
+  Date: string
+  Time: string
+}
+
 function App()
 {
   
   useEffect(()=>{fetch("http://127.0.0.1:8000/matches").then((response) => (response.json())).then((data) => setMatches(data.matches))},[])
 
   const[goals,setGoals] = useState(0);
-  const[matches,setMatches] = useState([])
+  
+  const[matches,setMatches] = useState<Match[]>([])
 
     return(    
       <div>
