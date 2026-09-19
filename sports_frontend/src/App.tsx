@@ -1,5 +1,7 @@
 import './table.css'
 import './index.css'
+import { useState , useEffect } from 'react'
+
 
 function SportsAnalysis()
 {
@@ -11,51 +13,52 @@ function SportsAnalysis()
 function App()
 {
   
-  const score = [
-    {
-      id : 1,
-      homeTeam: 'Arsenal',
-      awayTeam: 'Chelsea',
-      homeScore : 2,
-      awayScore : 3,
-    },
-    
-    {
-      id : 2,
-      homeTeam : 'Liverpool',
-      awayTeam : 'Manchester City',
-      homeScore : 1,
-      awayScore : 1
-    }
-  ]
+  useEffect(()=>{fetch("http://127.0.0.1:8000/matches").then((response) => (response.json())).then((data) => setMatches(data.matches))},[])
+
+  const[goals,setGoals] = useState(0);
+  const[matches,setMatches] = useState([])
 
     return(    
       <div>
-        <h1> <SportsAnalysis/> </h1>
-      
+        <SportsAnalysis/> 
+        <h2>Goals: {goals} </h2>
+        <button onClick = {() => setGoals(goals+1)}> 
+          Add a goal
+        </button>
+
+        <button onClick = {() => setGoals(goals-1)}>
+          Remove a goal
+        </button>
+
         <table>
-          <tr>
-            <td> Match ID </td>
-            <td> HomeTeam</td>
-            <td> AwayTeam</td>
-            <td> homeScore</td>
-            <td> awayScore </td>
-          </tr>
-
-          {
-            score.map((match) => (
-
-              <tr>
-                <td>{match.id}</td>
-                <td>{match.homeTeam}</td>
-                <td>{match.awayTeam}</td>
-                <td>{match.homeScore}</td>
-                <td>{match.awayScore}</td>
-              </tr>
-            )
-          )
-          }
-
+          <thead>
+            <tr>
+              <td> Match ID </td>
+              <td> HomeTeam</td>
+              <td> AwayTeam</td>
+              <td> homeScore</td>
+              <td> awayScore </td>
+              <td> Win</td>
+              <td> Date</td>
+              <td> Time</td>
+            </tr>
+          </thead>
+          
+          <tbody>
+          {matches.map((match)=>(
+            <tr key = {match.id}>
+              <td>{match.id}</td>
+              <td>{match.homeTeam}</td>
+              <td>{match.awayTeam}</td>
+              <td>{match.homeScore}</td>
+              <td>{match.awayScore}</td>
+              <td>{match.Win}</td>
+              <td>{match.Date}</td>
+              <td>{match.Time}</td>
+            </tr>
+          ))}
+          </tbody>
+        
         </table>
       </div>
     )
