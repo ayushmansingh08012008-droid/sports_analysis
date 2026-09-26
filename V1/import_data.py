@@ -1,7 +1,5 @@
 import pandas as pd
 import psycopg
-from FastAPI import FastAPI
-from FastAPI.middleware.cors import CORSMiddleware
 # Imported panda for tabular conversion of dataset in form of .csv
 
 

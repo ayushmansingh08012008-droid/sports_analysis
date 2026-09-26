@@ -10,6 +10,13 @@ function SportsAnalysis()
   )
 }
 
+function Description()
+{
+  return(
+    <h2> EPL (Season 2025-26) </h2>
+  )
+}
+
 type Match = {
   id: number
   homeTeam: string
@@ -25,22 +32,18 @@ function App()
 {
   
   useEffect(()=>{fetch("http://127.0.0.1:8000/matches").then((response) => (response.json())).then((data) => setMatches(data.matches))},[])
-
-  const[goals,setGoals] = useState(0);
   
   const[matches,setMatches] = useState<Match[]>([])
+  const[page,setPage] = useState(1)
+  const matchPerPage = 20;
+  const start = (page-1) *matchPerPage;
+  const end = start + matchPerPage;
+  const visiblematches = matches.slice(start,end);
 
     return(    
       <div>
         <SportsAnalysis/> 
-        <h2>Goals: {goals} </h2>
-        <button onClick = {() => setGoals(goals+1)}> 
-          Add a goal
-        </button>
-
-        <button onClick = {() => setGoals(goals-1)}>
-          Remove a goal
-        </button>
+        <Description/>
 
         <table>
           <thead>
@@ -57,7 +60,7 @@ function App()
           </thead>
           
           <tbody>
-          {matches.map((match)=>(
+          {visiblematches.map((match)=>(
             <tr key = {match.id}>
               <td>{match.id}</td>
               <td>{match.homeTeam}</td>
@@ -72,6 +75,14 @@ function App()
           </tbody>
         
         </table>
+
+        <div className = 'pagination'>
+          <button onClick={()=> setPage(page-1)}> Previous </button>
+        </div>
+
+        <div className = 'pagination'>
+          <button onClick={() => setPage(page+1)}> Next </button>
+        </div>
       </div>
     )
 
